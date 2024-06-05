@@ -1,9 +1,12 @@
-<script>
+<script lang="ts">
 	import { fly, slide } from 'svelte/transition';
 	import { enhance } from '$app/forms';
 	import { message } from '$lib/message';
 	export let data;
 	export let form;
+
+	let creating = false;
+	let deleting: string[] = [];
 </script>
 
 <h1>Hello {data.visited ? 'friend' : 'stranger'}!</h1>
@@ -14,23 +17,55 @@
 		<p class="error">{form.error}</p>
 	{/if}
 
-	<form method="post" action="?/create" use:enhance>
+	<form
+		method="post"
+		action="?/create"
+		use:enhance={() => {
+			creating = true;
+
+			return async ({ update }) => {
+				await update();
+				creating = false;
+			};
+		}}
+	>
 		<label>
 			add a todo:
-			<input name="description" value={form?.description ?? ''} autocomplete="off" required />
+			<input
+				disabled={creating}
+				name="description"
+				value={form?.description ?? ''}
+				autocomplete="off"
+				required
+			/>
 		</label>
 	</form>
 
 	<ul class="todo-list">
-		{#each data.todoList as todo (todo.id)}
+		{#each data.todoList.filter(({ id }) => !deleting.includes(id)) as todo (todo.id)}
 			<li in:fly={{ y: 20 }} out:slide>
-				<form method="post" action="?/delete" use:enhance>
+				<form
+					method="post"
+					action="?/delete"
+					use:enhance={() => {
+						deleting = [...deleting, todo.id];
+
+						return async ({ update }) => {
+							await update();
+							deleting = deleting.filter((id) => id !== todo.id);
+						};
+					}}
+				>
 					<input type="hidden" name="id" value={todo.id} />
 					<span>{todo.description}</span>
 					<button aria-label="Mark as complete" />
 				</form>
 			</li>
 		{/each}
+
+		{#if creating}
+			<span class="saving">saving...</span>
+		{/if}
 	</ul>
 </div>
 
@@ -89,5 +124,9 @@
 			gap: 1em;
 			padding: 0.5em 1em;
 		}
+	}
+
+	.saving {
+		opacity: 0.5;
 	}
 </style>

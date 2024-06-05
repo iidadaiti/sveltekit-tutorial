@@ -4,6 +4,12 @@ import * as db from '$lib/server/database.js';
 
 const userIdCookieKey = 'userId';
 
+function wait(time = 1000) {
+	return new Promise<void>((resolve) => {
+		setTimeout(resolve, time);
+	});
+}
+
 export function load({ cookies }: PageServerLoadEvent) {
 	const visitedCookieKey = 'visited';
 
@@ -22,6 +28,8 @@ export function load({ cookies }: PageServerLoadEvent) {
 
 export const actions: Actions = {
 	create: async ({ cookies, request }) => {
+		await wait();
+
 		const data = await request.formData();
 
 		const userId = cookies.get(userIdCookieKey);
@@ -50,6 +58,8 @@ export const actions: Actions = {
 	},
 
 	delete: async ({ cookies, request }) => {
+		await wait();
+
 		const data = await request.formData();
 
 		const userId = cookies.get(userIdCookieKey);

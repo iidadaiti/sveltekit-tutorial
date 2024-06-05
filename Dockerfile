@@ -12,5 +12,6 @@ RUN apt-get update -qq \
     openssh-server \
     tini \
     && rm -rf /var/lib/apt/lists/*
+EXPOSE 5173
 ENTRYPOINT ["/usr/bin/tini", "--"]
 USER node

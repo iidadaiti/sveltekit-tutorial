@@ -1,5 +1,7 @@
 import type { LoadEvent } from '@sveltejs/kit';
 
+export const ssr = false;
+
 export async function load(event: LoadEvent) {
 	const response = await event.fetch('/a');
 

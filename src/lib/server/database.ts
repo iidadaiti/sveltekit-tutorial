@@ -32,11 +32,15 @@ export function createTodo(userId: string, description: string) {
 		throw new Error('todo must be unique');
 	}
 
-	todoList.push({
+	const todo: Todo = {
 		id: crypto.randomUUID(),
 		description,
 		done: false
-	});
+	};
+
+	todoList.push(todo);
+
+	return todo;
 }
 
 export function deleteTodo(userId: string, todoId: string) {

@@ -23,6 +23,31 @@
 		<p class="error">{form.error}</p>
 	{/if}
 
+	<label>
+		add a todo from API:
+		<input
+			autocomplete="off"
+			on:keydown={async (e) => {
+				if (e.key !== 'Enter') {
+					return;
+				}
+
+				const input = e.currentTarget;
+				const description = input.value;
+				const response = await fetch('/todo', {
+					method: 'POST',
+					body: JSON.stringify({ description }),
+					headers: { 'Content-Type': 'application/json' }
+				});
+
+				const { id } = await response.json();
+				data.todoList = [...data.todoList, { id, description, done: false }];
+
+				input.value = '';
+			}}
+		/>
+	</label>
+
 	<form
 		method="post"
 		action="?/create"

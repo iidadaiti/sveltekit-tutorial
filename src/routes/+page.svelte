@@ -7,6 +7,12 @@
 
 	let creating = false;
 	let deleting: string[] = [];
+	let number: number | undefined;
+
+	async function roll() {
+		const response = await fetch('/roll');
+		number = await response.json();
+	}
 </script>
 
 <h1>Hello {data.visited ? 'friend' : 'stranger'}!</h1>
@@ -69,6 +75,14 @@
 	</ul>
 </div>
 
+<div>
+	<button on:click={roll}>Roll the dice</button>
+
+	{#if number !== undefined}
+		<p>You rolled a {number}</p>
+	{/if}
+</div>
+
 <style>
 	.centered {
 		max-width: 20em;
@@ -85,18 +99,6 @@
 
 	span {
 		flex: 1;
-	}
-
-	button {
-		width: 1.5em;
-		height: 1.5em;
-		border: none;
-		background: url(./remove.svg) no-repeat;
-		cursor: pointer;
-		height: 100%;
-		aspect-ratio: 1;
-		opacity: 0.5;
-		transition: opacity 0.2s;
 	}
 
 	button:hover {
@@ -123,6 +125,18 @@
 			align-items: center;
 			gap: 1em;
 			padding: 0.5em 1em;
+		}
+
+		& button {
+			width: 1.5em;
+			height: 1.5em;
+			border: none;
+			background: url(./remove.svg) no-repeat;
+			cursor: pointer;
+			height: 100%;
+			aspect-ratio: 1;
+			opacity: 0.5;
+			transition: opacity 0.2s;
 		}
 	}
 

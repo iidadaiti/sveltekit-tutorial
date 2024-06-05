@@ -1,7 +1,6 @@
 <script>
 	import { message } from '$lib/message';
-	export let data;
 </script>
 
-<h1>Hello {data.visited ? 'friend' : 'stranger'}!</h1>
+<h1>a deeply nested route</h1>
 <p>{message}</p>

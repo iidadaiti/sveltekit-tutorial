@@ -1,4 +1,12 @@
-import type { Handle, HandleFetch } from '@sveltejs/kit';
+import type { Handle, HandleServerError, HandleFetch } from '@sveltejs/kit';
+
+export async function handleError({
+	error
+}: Parameters<HandleServerError>[0] & Record<'error', Error>) {
+	console.error(error.stack);
+
+	return { message: 'everything is fine', code: 'JEREMYBEARIMY' };
+}
 
 export async function handleFetch({ event, request, fetch }: Parameters<HandleFetch>[0]) {
 	const url = new URL(request.url);

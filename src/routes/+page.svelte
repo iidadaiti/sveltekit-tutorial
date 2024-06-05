@@ -19,7 +19,7 @@
 		</label>
 	</form>
 
-	<ul class="todoList">
+	<ul class="todo-list">
 		{#each data.todoList as todo (todo.id)}
 			<li>
 				<form method="post" action="?/delete">
@@ -51,8 +51,10 @@
 	}
 
 	button {
+		width: 1.5em;
+		height: 1.5em;
 		border: none;
-		background: url(./remove.svg) no-repeat 50% 50%;
+		background: url(./remove.svg) no-repeat;
 		cursor: pointer;
 		height: 100%;
 		aspect-ratio: 1;
@@ -66,5 +68,24 @@
 
 	.error {
 		color: red;
+	}
+
+	.todo-list {
+		display: grid;
+		gap: 0.5em;
+		list-style: none;
+		margin: 0;
+		padding: 0.5em 0;
+
+		& > li {
+			border: 1px solid gray;
+		}
+
+		& form {
+			display: flex;
+			align-items: center;
+			gap: 1em;
+			padding: 0.5em 1em;
+		}
 	}
 </style>

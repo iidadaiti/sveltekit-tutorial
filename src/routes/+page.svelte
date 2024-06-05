@@ -1,16 +1,21 @@
 <script>
 	import { message } from '$lib/message';
 	export let data;
+	export let form;
 </script>
 
 <h1>Hello {data.visited ? 'friend' : 'stranger'}!</h1>
 <p>{message}</p>
 
 <div class="centered">
+	{#if form?.error}
+		<p class="error">{form.error}</p>
+	{/if}
+
 	<form method="post" action="?/create">
 		<label>
 			add a todo:
-			<input type="text" name="description" autocomplete="off" />
+			<input name="description" value={form?.description ?? ''} autocomplete="off" required />
 		</label>
 	</form>
 
@@ -57,5 +62,9 @@
 
 	button:hover {
 		opacity: 1;
+	}
+
+	.error {
+		color: red;
 	}
 </style>

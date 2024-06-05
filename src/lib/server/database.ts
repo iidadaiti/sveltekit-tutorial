@@ -26,9 +26,13 @@ export function getTodoList(userId: string) {
 }
 
 export function createTodo(userId: string, description: string) {
-	const todoList = db.get(userId);
+	const todoList = getTodoList(userId);
 
-	todoList?.push({
+	if (todoList.some((todo) => todo.description === description)) {
+		throw new Error('todo must be unique');
+	}
+
+	todoList.push({
 		id: crypto.randomUUID(),
 		description,
 		done: false
@@ -36,10 +40,10 @@ export function createTodo(userId: string, description: string) {
 }
 
 export function deleteTodo(userId: string, todoId: string) {
-	const todoList = db.get(userId);
-	const index = todoList?.findIndex((todo) => todo.id === todoId) ?? -1;
+	const todoList = getTodoList(userId);
+	const index = todoList.findIndex((todo) => todo.id === todoId) ?? -1;
 
 	if (index !== -1) {
-		todoList?.splice(index, 1);
+		todoList.splice(index, 1);
 	}
 }

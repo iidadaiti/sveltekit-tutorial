@@ -1,4 +1,5 @@
 import type { Actions, PageServerLoadEvent } from './$types';
+import { fail } from '@sveltejs/kit';
 import * as db from '$lib/server/database.js';
 
 const userIdCookieKey = 'userId';
@@ -26,8 +27,25 @@ export const actions: Actions = {
 		const userId = cookies.get(userIdCookieKey);
 		const description = data.get('description');
 
-		if (typeof userId === 'string' && typeof description === 'string') {
+		if (typeof description !== 'string') {
+			throw new Error('description type is not string');
+		}
+
+		if (description === '') {
+			throw new Error('todo must have a description');
+		}
+
+		if (typeof userId !== 'string') {
+			throw new Error('userId type is not string');
+		}
+
+		try {
 			db.createTodo(userId, description);
+		} catch (error) {
+			return fail(422, {
+				description,
+				error: error instanceof Error ? error.message : 'server error'
+			});
 		}
 	},
 

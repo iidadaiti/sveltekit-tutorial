@@ -1,5 +1,10 @@
-export function load(event: Record<'locals', Record<'answer', 'string'>>) {
+import type { LoadEvent } from '@sveltejs/kit';
+
+export async function load(event: LoadEvent) {
+	const response = await event.fetch('/a');
+
 	return {
-		message: `the answer is ${event.locals.answer}`
+		eventLocalsMessage: `the answer is ${(event as any).locals.answer}`,
+		fetchMessage: await response.text()
 	};
 }

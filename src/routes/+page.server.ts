@@ -20,7 +20,7 @@ export function load({ cookies }: PageServerLoadEvent) {
 }
 
 export const actions: Actions = {
-	default: async ({ cookies, request }) => {
+	create: async ({ cookies, request }) => {
 		const data = await request.formData();
 
 		const userId = cookies.get(userIdCookieKey);
@@ -28,6 +28,17 @@ export const actions: Actions = {
 
 		if (typeof userId === 'string' && typeof description === 'string') {
 			db.createTodo(userId, description);
+		}
+	},
+
+	delete: async ({ cookies, request }) => {
+		const data = await request.formData();
+
+		const userId = cookies.get(userIdCookieKey);
+		const id = data.get('id');
+
+		if (typeof userId === 'string' && typeof id === 'string') {
+			db.deleteTodo(userId, id);
 		}
 	}
 };

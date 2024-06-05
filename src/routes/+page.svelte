@@ -7,7 +7,7 @@
 <p>{message}</p>
 
 <div class="centered">
-	<form method="post">
+	<form method="post" action="?/create">
 		<label>
 			add a todo:
 			<input type="text" name="description" autocomplete="off" />
@@ -17,7 +17,11 @@
 	<ul class="todoList">
 		{#each data.todoList as todo (todo.id)}
 			<li>
-				{todo.description}
+				<form method="post" action="?/delete">
+					<input type="hidden" name="id" value={todo.id} />
+					<span>{todo.description}</span>
+					<button aria-label="Mark as complete" />
+				</form>
 			</li>
 		{/each}
 	</ul>
@@ -35,5 +39,23 @@
 
 	input {
 		flex: 1;
+	}
+
+	span {
+		flex: 1;
+	}
+
+	button {
+		border: none;
+		background: url(./remove.svg) no-repeat 50% 50%;
+		cursor: pointer;
+		height: 100%;
+		aspect-ratio: 1;
+		opacity: 0.5;
+		transition: opacity 0.2s;
+	}
+
+	button:hover {
+		opacity: 1;
 	}
 </style>

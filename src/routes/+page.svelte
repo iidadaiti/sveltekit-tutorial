@@ -75,6 +75,23 @@
 	<ul class="todo-list">
 		{#each data.todoList.filter(({ id }) => !deleting.includes(id)) as todo (todo.id)}
 			<li in:fly={{ y: 20 }} out:slide>
+				<label>
+					<input
+						type="checkbox"
+						checked={todo.done}
+						on:change={async (e) => {
+							const done = e.currentTarget.checked;
+
+							await fetch(`/todo/${todo.id}`, {
+								method: 'PUT',
+								body: JSON.stringify({ done }),
+								headers: { 'Content-Type': 'application/json' }
+							});
+						}}
+					/>
+					<span>{todo.description}</span>
+				</label>
+
 				<form
 					method="post"
 					action="?/delete"
@@ -88,9 +105,16 @@
 					}}
 				>
 					<input type="hidden" name="id" value={todo.id} />
-					<span>{todo.description}</span>
 					<button aria-label="Mark as complete" />
 				</form>
+
+				<button
+					type="button"
+					on:click={async () => {
+						await fetch(`/todo/${todo.id}`, { method: 'DELETE' });
+						data.todoList = data.todoList.filter((t) => t !== todo);
+					}}>Delete from API</button
+				>
 			</li>
 		{/each}
 
@@ -142,17 +166,14 @@
 		padding: 0.5em 0;
 
 		& > li {
-			border: 1px solid gray;
-		}
-
-		& form {
 			display: flex;
 			align-items: center;
 			gap: 1em;
 			padding: 0.5em 1em;
+			border: 1px solid gray;
 		}
 
-		& button {
+		& form button {
 			width: 1.5em;
 			height: 1.5em;
 			border: none;

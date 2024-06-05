@@ -51,3 +51,12 @@ export function deleteTodo(userId: string, todoId: string) {
 		todoList.splice(index, 1);
 	}
 }
+
+export function toggleTodo(userId: string, id: string, done: boolean) {
+	const todoList = getTodoList(userId);
+	const todo = todoList.find((todo) => todo.id === id);
+	if (!todo) {
+		throw new Error('unable to get todo');
+	}
+	todo.done = done;
+}

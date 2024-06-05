@@ -10,7 +10,9 @@ function wait(time = 1000) {
 	});
 }
 
-export function load({ cookies }: PageServerLoadEvent) {
+export async function load({ cookies }: PageServerLoadEvent) {
+	await wait(1000);
+
 	const visitedCookieKey = 'visited';
 
 	let id = cookies.get(userIdCookieKey);

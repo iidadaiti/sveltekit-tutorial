@@ -6,6 +6,8 @@
 	<a href="/" aria-current={$page.url.pathname === '/'}>about</a>
 	<a href="/blog" aria-current={$page.url.pathname.startsWith('/blog')}>blog</a>
 	<a href="/about" aria-current={$page.url.pathname.startsWith('/about')}>about</a>
+	<a href="/expected">page with expected error</a>
+	<a href="/unexpected">page with unexpected error</a>
 
 	{#if $navigating?.to}
 		navigating to {$navigating.to.url.pathname}

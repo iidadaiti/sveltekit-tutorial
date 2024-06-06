@@ -46,6 +46,13 @@
 	<a href="/about">about</a>
 </nav>
 
+<nav>
+	<a href="/lang/">default</a>
+	<a href="/lang/en">english</a>
+	<a href="/lang/de">german</a>
+	<a href="/lang/fr">french</a>
+</nav>
+
 <slot />
 
 <p>the page has been open for {seconds} seconds</p>

@@ -1,6 +1,19 @@
 <script lang="ts">
 	import { navigating } from '$app/stores';
 	import type { Navigation } from '@sveltejs/kit';
+	import { onMount } from 'svelte';
+
+	// reload check
+	let seconds = 0;
+	onMount(() => {
+		const interval = setInterval(() => {
+			seconds += 1;
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	});
 
 	let previous: Navigation;
 	let start = Date.now();
@@ -28,7 +41,14 @@
 	<a href="/slow-b">slow-b</a>
 </nav>
 
+<nav data-sveltekit-reload>
+	<a href="/">home</a>
+	<a href="/about">about</a>
+</nav>
+
 <slot />
+
+<p>the page has been open for {seconds} seconds</p>
 
 {#if previous && end}
 	<p>

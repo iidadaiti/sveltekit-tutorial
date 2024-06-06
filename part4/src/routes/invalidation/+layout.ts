@@ -1,6 +1,5 @@
-export async function load({ fetch }) {
-	const response = await fetch('/invalidation/api/now');
-	const now = await response.json();
+export async function load({ depends, fetch }) {
+	depends('data:now');
 
-	return { now };
+	return { now: new Date() };
 }

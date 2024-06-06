@@ -1,5 +1,3 @@
-export async function load({ depends, fetch }) {
-	depends('data:now');
-
+export async function load() {
 	return { now: new Date() };
 }

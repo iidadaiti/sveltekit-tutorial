@@ -53,6 +53,12 @@
 	<a href="/lang/fr">french</a>
 </nav>
 
+<nav>
+	{#each ['ff3e00', '676779', '42b4ff', 'invalid'] as color}
+		<a href="/colors/{color}" style="--color: #{color}">#{color}</a>
+	{/each}
+</nav>
+
 <slot />
 
 <p>the page has been open for {seconds} seconds</p>
